@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqldiff PUBLIC "-//OpenMRS//DTD OpenMRS SQL Diff Config 1.0//EN" "http://resources.openmrs.org/doctype/sqldiff-1.0.dtd">
+
+<sqldiff version="1.0">
+	<help>
+		USE:
+			The diffs are ordered by datamodel version number.
+			The script can be run in a top down fashion and is
+			expected to not fail or overwrite old data
+		
+	</help>
+	
+	<diff>
+		<version>0.1</version>
+		<author>Ben Wolfe</author>
+		<date>Apr 17th 2009</date>
+		<description>
+			Adding simpleservice_level table for the AwesomeLevel object
+		</description>
+		<sql>
+			CREATE TABLE IF NOT EXISTS `simpleservice_level` (
+			  `awesome_level_id` int(11) NOT NULL auto_increment,
+			  `level` int(11) NOT NULL,
+			  PRIMARY KEY  (`awesome_level_id`)
+			) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+			
+		</sql>
+	</diff>
+	
+	<!-- Uncomment this and add attributes to the AwesomeLevel.java object to set this property -->
+	<!-- 
+	<diff>
+		<version>0.2</version>
+		<author>You!</author>
+		<date>Today!</date>
+		<description>
+			Adding another column to the simpleservice_level table
+		</description>
+		<sql>
+			ALTER TABLE simpleservice_level add column `comment` varchar(255);
+		</sql>
+	</diff>
+	-->
+</sqldiff>

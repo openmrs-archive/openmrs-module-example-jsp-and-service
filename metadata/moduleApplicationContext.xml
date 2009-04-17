@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!-- This is a normal spring application context file.  See http://www.springframework.org for more info on those.-->
+  
+<beans>
+	
+	<!-- This maps urls to controllers -->
+	<!-- Give this a unique id for your module -->
+    <bean id="simpleServiceExampleMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
+    	
+    	<!-- If you are going to override a url in openmrs or in another module, make sure this number is lower than 
+    	     the other one -->
+    	<property name="order"><value>2</value></property>
+    	
+    	<!-- A list of url's to controllers -->
+    	<property name="mappings">
+            <props>
+            	<!-- See the <bean id="level" element below for the full controller definition -->
+				<prop key="module/simpleservice/awesomeLevel.htm">level</prop>
+				
+				<!--  Uncomment this and change to add more mappings -->
+				<!-- <prop key="module/simpleservice/anotherPage.form">anotherBeanDefinedBelow</prop> -->
+				
+			</props>
+		</property>
+	</bean>
+	
+	<!-- This bean's id is used up above in the "awesomeExampleMapping" element. -->
+	<!-- The "class" defined here is instantiated, then each attribute defined in each "property" element is called.  (setCommandName, setFormView, setSuccessView) -->
+	<bean id="level" class="org.openmrs.module.simpleservice.web.controller.LevelController">
+		<!-- This lets us customize how we access the object returned by the "getFormBackingObject()" method -->
+		<!-- In jsp, simply use ${levelFormBackingObject.level} to get the value now -->
+		<property name="commandName"><value>levelFormBackingObject</value></property>
+		
+		<!-- This is where the jsp is currently stored.  "jsp" is added to the end automatically for you -->
+		<property name="formView"><value>/module/simpleservice/awesomeLevel</value></property>
+		
+		<!-- This is where the controller should send the user after submitting a page and it happening successfully -->
+		<property name="successView"><value>redirect:awesomeLevel.htm</value></property>
+		
+		<property name="validator"><bean class="org.openmrs.module.simpleservice.AwesomeLevelValidator"/></property>
+	</bean>
+	
+	
+	<!-- Creates the service so objects can be saved to the database -->
+	
+	<!-- This summons the "serviceContext" bean created in the core openmrs applicationContext-service.xml file. -->
+	<bean parent="serviceContext">
+	
+		<!-- This adds your service to the list of moduleServices on the core ServiceContext in openmrs -->
+		<property name="moduleService">
+			<list>
+				<!-- must be a full path to your service __interface__ -->
+				<value>org.openmrs.module.simpleservice.SimpleService</value>
+				
+				<!-- This is required stuff for transactions to work correctly -->
+				<bean class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+					<property name="transactionManager"><ref bean="transactionManager"/></property> <!-- more req stuff -->
+					<property name="target">
+					
+						<!-- Your implementation of your service interface -->
+						<bean class="org.openmrs.module.simpleservice.impl.SimpleServiceImpl">
+							<!-- The attribute on your impl that needs to be set --> 
+							<property name="awesomeDao">
+								<!-- The implementation of the dao you want to user -->
+								<bean class="org.openmrs.module.simpleservice.db.hibernate.HibernateSimpleServiceDAO">
+									<!-- set the attribute so the dao so hibernate can read/write to the db -->
+									<!-- This bean is defined in the parent spring applicationContext-service.xml that is defined in core openmrs -->
+									<property name="sessionFactory"><ref bean="sessionFactory"/></property>	
+								</bean>
+							</property>	
+						</bean>
+					</property>
+					<property name="preInterceptors">
+						<list>
+							<ref bean="authorizationInterceptor"/>
+						</list>
+					</property>
+					<property name="transactionAttributeSource">
+						<bean class="org.springframework.transaction.annotation.AnnotationTransactionAttributeSource"/>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
+</beans>

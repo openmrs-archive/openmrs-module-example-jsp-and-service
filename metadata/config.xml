@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE module PUBLIC "-//OpenMRS//DTD OpenMRS Config 1.0//EN" "http://resources.openmrs.org/doctype/config-1.0.dtd">
+<module configVersion="1.0">
+	
+	<!-- AwesomeExample Module Properties -->
+	<id>simpleservice</id>
+	<name>AwesomeExample Module</name>
+	<version>0.1</version>
+	<package>org.openmrs.module.@MODULE_ID@</package>
+	<author>ben</author>
+	<description>(Awesome) Example of an OpenMRS Module</description>
+	<activator>@MODULE_PACKAGE@.SimpleServiceActivator</activator>
+	<!-- /AwesomeExample Module Properties -->
+	
+	<!-- This adds a list of links on the administration page -->
+	<!-- See /src/org/openmrs/module/simpleservice/SimpleServiceAdminExt.java for more -->
+	<extension>
+		<point>org.openmrs.admin.list</point>
+		<class>@MODULE_PACKAGE@.SimpleServiceAdminExt</class>
+	</extension>
+	
+	<!-- There must be one "messages" element in this file per translation that is written -->
+	<messages>
+		<lang>en</lang>
+		<file>messages.properties</file>
+	</messages>
+	
+	<mappingFiles>
+		AwesomeLevel.hbm.xml
+	</mappingFiles>
+</module>

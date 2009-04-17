@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<!-- This file must be listed in the /metadata/config.xml file in the mappingFiles element -->
+
+<hibernate-mapping package="@MODULE_PACKAGE@">
+	
+	<!-- This table is created at module startup because we defined it in the sqldiff.xml file -->	
+	<class name="AwesomeLevel" table="simpleservice_level">
+
+		<id name="awesomeLevelId" type="int" column="awesome_level_id" unsaved-value="0">
+			<generator class="native" />
+		</id>
+
+		<property name="level" type="int" not-null="true" column="level" />
+		
+		<!-- Uncomment this and add an attribute to the AwesomeLevel.java object -->
+		
+		<!-- <property name="comment" type="String" not-null="true" column="comment" /> -->
+		
+	</class>
+</hibernate-mapping>
